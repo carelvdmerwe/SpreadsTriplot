@@ -1,0 +1,12 @@
+name: triplotspreadsvdm
+title: TriplotSpreadsVDM
+username:
+account: carelvdmerwe
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 991825
+bundleId: 2168969
+url: https://carelvdmerwe.shinyapps.io/triplotspreadsvdm/
+when: 1561118132.02379
+asMultiple: FALSE
+asStatic: FALSE
