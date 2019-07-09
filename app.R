@@ -19,29 +19,24 @@ Install.packagesTriplot <- function()
     library(rgl)
     library(shape)
     library(e1071)
-    clipcords <<- source("clipcords.R")$value
-    CVAbipl_C <<- source("CVAbipl_C.R")$value
-    drawbipl.bagalpha_C <<- source("drawbipl.bagalpha_C.R")$value
-    drawbipl.bagalpha_C2 <<-source("drawbipl.bagalpha_C2.R")$value
-    PCAbipl_C <<- source("PCAbipl_C.R")$value
-    unioncords <<- source("unioncords.R")$value
-    compute.bagplot_C <<- source("compute.bagplot_C.R")$value
-    Draw.line2_CTri <<- source("Draw.line2_CTri.R")$value
-    Plot.marker.new_C <<- source("Plot.marker.new_C.R")$value
-    confmetrics <<- source("confmetrics.R")$value
-    indmat <<- source("indmat.R")$value
-    Draw.line2 <<- source("Draw.line2.R")$value
-    Draw.onecmline <<- source("Draw.onecmline.R")$value
-    Plot.marker.new <<- source("Plot.marker.new.R")$value
-    Eigen.twosided  <<- source("Eigen.twosided.R")$value
-    bipldrawknn <<- source("bipldrawknn.R")$value
-    playground  <<- source("playground.R")$value
-    DrawOrthogline  <<- source("DrawOrthogline.R")$value
-    #art3dat <- read.csv("MainTestData (all).csv")
-    #art3dat[art3dat[,1]==1,1]<- 3
-    #art3dat[art3dat[,1]==0,1]<- 2
-    #art3dat[art3dat[,1]==-1,1]<- 1
-    #art3dat<- art3dat[order(art3dat[,1], decreasing = FALSE),]
+    clipcords <<- source("source/clipcords.R")$value
+    CVAbipl_C <<- source("source/CVAbipl_C.R")$value
+    drawbipl.bagalpha_C <<- source("source/drawbipl.bagalpha_C.R")$value
+    drawbipl.bagalpha_C2 <<-source("source/drawbipl.bagalpha_C2.R")$value
+    PCAbipl_C <<- source("source/PCAbipl_C.R")$value
+    unioncords <<- source("source/unioncords.R")$value
+    compute.bagplot_C <<- source("source/compute.bagplot_C.R")$value
+    Draw.line2_CTri <<- source("source/Draw.line2_CTri.R")$value
+    Plot.marker.new_C <<- source("source/Plot.marker.new_C.R")$value
+    confmetrics <<- source("source/confmetrics.R")$value
+    indmat <<- source("source/indmat.R")$value
+    Draw.line2 <<- source("source/Draw.line2.R")$value
+    Draw.onecmline <<- source("source/Draw.onecmline.R")$value
+    Plot.marker.new <<- source("source/Plot.marker.new.R")$value
+    Eigen.twosided  <<- source("source/Eigen.twosided.R")$value
+    bipldrawknn <<- source("source/bipldrawknn.R")$value
+    playground  <<- source("source/playground.R")$value
+    DrawOrthogline  <<- source("source/DrawOrthogline.R")$value
     outputfromvarsim <- c(1,  4,  5, 10, 12, 13, 16, 17, 18, 20, 21, 22, 24, 26, 27, 28, 35)
     chosenvars <-  c(1, outputfromvarsim[-1]+1)
     varnamesall <<- c("d.Liquidity","d.Y_10","d.Slo_(10-2)","(d.Y_10) ^2","d.(Y-S)_10","(d.Y_10) ^3","d.Y_2","d.Y_5","d.Y_max","d.Slo_(5-2)","d.Slo_(max-2)","d.Slo_(max-10)","d.Cur(DL)","d.Lev(VDM)","d.Slo(VDM)","d.Cur(VDM)","d.VolSkew","d.Leading","d.Coincident","d.Lagging","Leading","Coincident","Lagging","d.AC","d.CR","d.DA","d.DE","d.IC","d.LF","d.LTL","d.R","d.I","d.(R-I)","d.(R-M)","d.RVol","d.(R-I)Vol","d.(RVol-MVol)")
@@ -54,8 +49,8 @@ Install.packagesTriplot <- function()
     #set.seed(3)
     #sampleb <<- sort(sample(1:dim(art3dat)[1],round(0.25*dim(art3dat)[1],0)))
     #art3datin <-     art3dat[-sampleb,chosenvars]
-    graphdata <<- read.csv("datatrain.csv") 
-    graphdatatest <<- read.csv("datatest.csv") 
+    graphdata <<- read.csv("data/datatrain.csv") 
+    graphdatatest <<- read.csv("data/datatest.csv") 
 }
 
 
@@ -70,12 +65,22 @@ Install.packagesTriplot()
 ui <- tagList(
       navbarPage(
         theme = "yeti", 
-        "Triplot",
+        "Classifying yield spread movements through triplots: a South African application",
         tabPanel("",
                  sidebarPanel(
+                   
                    tabsetPanel(
  
-
+                   tabPanel("Info", 
+                            helpText("This Shiny web-based application serves as supplementary data to the paper of Van der Merwe and de Wet on
+                                     Classifying yield spread movements through triplots: a South African application."), 
+                        helpText("This sidebar panel allows the user to change the values of the specific observation that is analysed under the DATA tab. 
+                      The type of scoring methods used can be changed in the AXES SCORING tab, and the underlying properties of 
+                                     the base triplot can be changed in the BASE TRIPLOT tab."),
+                            helpText("Within the MAIN CALCULATION tab in the main panel the user can either view the actual and predicted values of the specific observation together
+                                     with their respective scores under VARIABLES FINAL SCORE. The VARIABLES RAW SCORE and AXES PREDICTIVENESS tabs provide 
+                                     the values that are used to calculate the final scores. Finally the triplots figures with the various groups of axes can be seen
+                                     in the INDIVIDUAL TRIPLOTS tab in the main panel.")),
                    tabPanel("Data", 
                             navlistPanel(
                             tabPanel(
@@ -216,23 +221,12 @@ server <- function(input,output,session)
         rv$actualtesttablescorefinal <<- apply(sweep(actualtest[displayorder,2:4], MARGIN=1, aa[displayorder], `*`),2,sum, na.rm = TRUE)
     })
     
-    #output$actual <- renderTable({
-    #  actualresults <<- data.frame("Actual values" = round(rv$actualtesttableval,2), "Predicted values" = round(rv$predictionstableval,2))
-    #  actualresults <<- as.data.frame(actualresults)
-    #  rownames(actualresults) <<- varnamesall[displayorder]
-    #  colnames(actualresults) <<-c("Actual values", "Approximated values")
-    #  actualresults
-    #}, rownames  = TRUE, align = 'lcc')
-    
- 
-    
     output$axfinalACT <- renderTable({
       axfinaltableACT <<- rbind(rv$actualtesttablescorefull, c(NA,t(rv$actualtesttablescorefinal)))
       axfinaltableACT <<- format(as.data.frame(round(axfinaltableACT,2)),nsmall=2)
       rownames(axfinaltableACT) <<- c(varnamesall[displayorder],"<strong>==TOTAL==</strong>")
       colnames(axfinaltableACT) <<-c("Value","Decrease", "Stable", "Increase")
       axfinaltableACT[dim(axfinaltableACT)[1],] <<- paste0("<strong>",axfinaltableACT[dim(axfinaltableACT)[1],],"</strong>")
-      #[-dim(axfinaltableACT)[1],] <<- format(round(axfinaltableACT[-dim(axfinaltableACT)[1],],2),nsmall = 2)
       axfinaltableACT
     }, rownames  = TRUE, align = 'lcccc',caption = "ACTUAL DATA",
     caption.placement = getOption("xtable.caption.placement", "top"), 
@@ -244,7 +238,6 @@ server <- function(input,output,session)
       rownames(axfinaltablePRED) <<- c(varnamesall[displayorder],"<strong>==TOTAL==</strong>")
       colnames(axfinaltablePRED) <<-c("Value","Decrease", "Stable", "Increase")
       axfinaltablePRED[dim(axfinaltablePRED)[1],] <<- paste0("<strong>",axfinaltablePRED[dim(axfinaltablePRED)[1],],"</strong>")
-      #[-dim(axfinaltableACT)[1],] <<- format(round(axfinaltablePRED[-dim(axfinaltablePRED)[1],],2),nsmall = 2)
       axfinaltablePRED
     }, rownames  = TRUE, align = 'lcccc',caption = "PREDICTED DATA",
     caption.placement = getOption("xtable.caption.placement", "top"), 
@@ -281,7 +274,6 @@ server <- function(input,output,session)
     
 
     output$share <- renderPlot({
-      #datatestin <<- as.data.frame(matrix(c(1, input$V1,input$V2,input$V3,  input$V4,input$V5,input$V6,  input$V7,input$V8,input$V9,  input$V10,input$V11,input$V12, input$V13,input$V14,input$V15,input$V16),ncol=17))
       updatedvars <- c(input$innerpoly/100,  input$knnin,input$outermult, input$outerpoly/100, input$nbp ) 
         replayPlot(x)
         outplay <<- playground(rv$bipltest,20, axin = sharemarkettypes, grid = input$gridsize,varnamesin = varnamesall,unifbar = (input$score == "Ratio"))
@@ -325,7 +317,6 @@ server <- function(input,output,session)
     
     output$fr <- renderPlot({
         updatedvars <- c(input$innerpoly/100,  input$knnin,input$outermult, input$outerpoly/100, input$nbp ) 
-        #datatestin <<- as.data.frame(matrix(c(1, input$V1,input$V2,input$V3,  input$V4,input$V5,input$V6,  input$V7,input$V8,input$V9,  input$V10,input$V11,input$V12, input$V13,input$V14,input$V15,input$V16),ncol=17))
         replayPlot(x)
         outplay <<- playground(rv$bipltest,20, axin = accounttype, grid = input$gridsize,varnamesin = varnamesall,unifbar = (input$score == "Ratio"))
         outplay <- outplay[[1]]
@@ -368,7 +359,6 @@ server <- function(input,output,session)
     
     output$eco <- renderPlot({
       updatedvars <- c(input$innerpoly/100,  input$knnin,input$outermult, input$outerpoly/100, input$nbp ) 
-      #datatestin <<- as.data.frame(matrix(c(1, input$V1,input$V2,input$V3,  input$V4,input$V5,input$V6,  input$V7,input$V8,input$V9,  input$V10,input$V11,input$V12, input$V13,input$V14,input$V15,input$V16),ncol=17))      
         replayPlot(x)
         outplay <<- playground(rv$bipltest,20, axin = economytype, grid = input$gridsize,varnamesin = varnamesall,unifbar = (input$score == "Ratio"))
         outplay <- outplay[[1]]
@@ -411,7 +401,6 @@ server <- function(input,output,session)
     
     output$ir <- renderPlot({
       updatedvars <- c(input$innerpoly/100,  input$knnin,input$outermult, input$outerpoly/100, input$nbp ) 
-      #rvdatatestin <<- as.data.frame(matrix(c(1, input$V1,input$V2,input$V3,  input$V4,input$V5,input$V6,  input$V7,input$V8,input$V9,  input$V10,input$V11,input$V12, input$V13,input$V14,input$V15,input$V16),ncol=17))      
         replayPlot(x)
         outplay <<- playground(rv$bipltest,20, axin = interesttypes, grid = input$gridsize,varnamesin = varnamesall,unifbar = (input$score == "Ratio"))
         outplay <- outplay[[1]]
@@ -455,8 +444,4 @@ server <- function(input,output,session)
 }
 
 shinyApp(ui=ui, server = server)
-
-#biplot moet orals oorgetrek word as settings verander - of at least net seker gemaak word dit verander wanneer moet
-#add tabel met scores hierna
-
 
