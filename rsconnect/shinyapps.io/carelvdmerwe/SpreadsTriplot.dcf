@@ -5,8 +5,8 @@ account: carelvdmerwe
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 995253
-bundleId: 2213671
+bundleId: 2647442
 url: https://carelvdmerwe.shinyapps.io/SpreadsTriplot/
-when: 1562658507.09242
+when: 1575662852.69297
 asMultiple: FALSE
 asStatic: FALSE
