@@ -37,14 +37,14 @@ Install.packagesTriplot <- function()
     bipldrawknn <<- source("source/bipldrawknn.R")$value
     playground  <<- source("source/playground.R")$value
     DrawOrthogline  <<- source("source/DrawOrthogline.R")$value
-    outputfromvarsim <- c(1,4,5,10,12,13,16,17,18,20,22,23,24,25,26,27,28,35)
+    outputfromvarsim <- c(1,4,5,9,10,12,13,16,17,18,20,22,23,24,25,26,27,28,35)
     chosenvars <-  c(1, outputfromvarsim[-1]+1)
     varnamesall <<- c("d.Liquidity","d.Y_10","d.Slo_(10-2)","(d.Y_10) ^2","d.(Y-S)_10","(d.Y_10) ^3","d.Y_2","d.Y_5","d.Y_max","d.Slo_(5-2)","d.Slo_(max-2)","d.Slo_(max-10)","d.Cur(DL)","d.Lev(VDM)","d.Slo(VDM)","d.Cur(VDM)","d.VolSkew","d.Leading","d.Coincident","d.Lagging","Leading","Coincident","Lagging","d.AC","d.CR","d.DA","d.DE","d.IC","d.LF","d.LTL","d.R","d.I","d.(R-I)","d.(R-M)","d.RVol","d.(R-I)Vol","d.(RVol-MVol)")
     varnamesall <<- varnamesall[(chosenvars-1)[-1]]
-    accounttype <<- c(12,13,14,15,16)
-    economytype <<- c(8,9,10,11)
-    sharemarkettypes <<- c(7,17)
-    interesttypes <<- c(1,2,3,4,5,6)
+    accounttype <<- c(13,14,15,16,17)
+    economytype <<- c(9,10,11,12)
+    sharemarkettypes <<- c(8,18)
+    interesttypes <<- c(1,2,3,4,5,6,7)
     displayorder <<- c(sharemarkettypes, accounttype,interesttypes ,economytype)
     #set.seed(3)
     #sampleb <<- sort(sample(1:dim(art3dat)[1],round(0.25*dim(art3dat)[1],0)))
@@ -86,17 +86,17 @@ ui <- tagList(
                             tabPanel(
                             "Share type covariates",
                             helpText(" "),
-                            fluidRow(column(6,sliderInput("V7",label="d.VolSkew",min = -4,max=4,value = graphdatatest[20,8],step = 0.01)),
-                                     column(6,sliderInput("V17",label="d.RVol",min = -167,max=167,value = graphdatatest[20,18],step = 0.01)))#,
+                            fluidRow(column(6,sliderInput("V8",label="d.VolSkew",min = -4,max=4,value = graphdatatest[20,9],step = 0.01)),
+                                     column(6,sliderInput("V18",label="d.RVol",min = -167,max=167,value = graphdatatest[20,19],step = 0.01)))#,
                             ),
                             tabPanel(
                               "Financial Ratio type covariates",
                               helpText(" "),
-                              fluidRow(column(6,sliderInput("V12",label="d.AC",min = -5,max=5,value = graphdatatest[20,13],step = 0.01)),
-                                       column(6,sliderInput("V13",label="d.CR",min = -5,max=5,value = graphdatatest[20,14],step = 0.01))),
-                              fluidRow(column(6,sliderInput("V14",label="d.DA",min = -1,max=1,value = graphdatatest[20,15],step = 0.01)),
-                                       column(6,sliderInput("V15",label="d.DE",min = -5,max=55,value = graphdatatest[20,16],step = 0.01))),
-                              fluidRow(column(6,sliderInput("V16",label="d.IC",min = -53,max=53,value = graphdatatest[20,17],step = 0.01)),
+                              fluidRow(column(6,sliderInput("V13",label="d.AC",min = -5,max=5,value = graphdatatest[20,14],step = 0.01)),
+                                       column(6,sliderInput("V14",label="d.CR",min = -5,max=5,value = graphdatatest[20,15],step = 0.01))),
+                              fluidRow(column(6,sliderInput("V15",label="d.DA",min = -1,max=1,value = graphdatatest[20,16],step = 0.01)),
+                                       column(6,sliderInput("V16",label="d.DE",min = -5,max=55,value = graphdatatest[20,17],step = 0.01))),
+                              fluidRow(column(6,sliderInput("V17",label="d.IC",min = -53,max=53,value = graphdatatest[20,18],step = 0.01)),
                                        column(6,""))
                             ),
                              tabPanel(
@@ -104,18 +104,20 @@ ui <- tagList(
                               helpText(" "),
                               fluidRow(column(6,sliderInput("V1",label="(d.Y_10)^2",min = -6,max=6,value = graphdatatest[20,2],step = 0.01)),
                                        column(6,sliderInput("V2",label="d.(Y-S)_10",min = -2,max=2,value = graphdatatest[20,3],step = 0.01))),
-                              fluidRow(column(6,sliderInput("V3",label="d.Slo_(5-2)",min = -3,max=3,value = graphdatatest[20,4],step = 0.01)),
-                                       column(6,sliderInput("V4",label="d.Slo_(max-2)",min = -2,max=2,value = graphdatatest[20,5],step = 0.01))),
-                              fluidRow(column(6,sliderInput("V5",label="d.Cur(DL)",min = -3,max=3,value = graphdatatest[20,6],step = 0.01)),
-                                       column(6,sliderInput("V6",label="d.Cur(VDM)",min = -3,max=3,value = graphdatatest[20,7],step = 0.01)))
+                              fluidRow(column(6,sliderInput("V3",label="d.Y_max",min = -3,max=3,value = graphdatatest[20,4],step = 0.01)),
+                                       column(6,sliderInput("V4",label="d.Slo_(5-2)",min = -3,max=3,value = graphdatatest[20,5],step = 0.01))),
+                              fluidRow(column(6,sliderInput("V5",label="d.Slo_(max-2)",min = -2,max=2,value = graphdatatest[20,6],step = 0.01)),
+                                       column(6,sliderInput("V6",label="d.Cur(DL)",min = -3,max=3,value = graphdatatest[20,7],step = 0.01))),
+                              fluidRow(column(6,sliderInput("V7",label="d.Cur(VDM)",min = -3,max=3,value = graphdatatest[20,8],step = 0.01)),
+                                       column(6,""))
                             ),
                             tabPanel(
                               "Economic type covariates",
                               helpText(" "),
-                              fluidRow(column(6,sliderInput("V8",label="d.Leading",min = -38,max=38,value = graphdatatest[20,9],step = 0.01)),
-                                       column(6,sliderInput("V9",label="d.Lagging",min = -37,max=37,value = graphdatatest[20,10],step = 0.01))),
-                              fluidRow(column(6,sliderInput("V10",label="Coincident",min = -13,max=13,value = graphdatatest[20,11],step = 0.01)),
-                                       column(6,sliderInput("V11",label="Lagging",min = -23,max=23,value = graphdatatest[20,12],step = 0.01)))#,
+                              fluidRow(column(6,sliderInput("V9",label="d.Leading",min = -38,max=38,value = graphdatatest[20,10],step = 0.01)),
+                                       column(6,sliderInput("V10",label="d.Lagging",min = -37,max=37,value = graphdatatest[20,11],step = 0.01))),
+                              fluidRow(column(6,sliderInput("V11",label="Coincident",min = -13,max=13,value = graphdatatest[20,12],step = 0.01)),
+                                       column(6,sliderInput("V12",label="Lagging",min = -23,max=23,value = graphdatatest[20,13],step = 0.01)))#,
                               
                             )
                             )
@@ -169,16 +171,16 @@ server <- function(input,output,session)
 {
     rv <<- reactiveValues()
     output$main <- renderPlot({
-        rv$datatestin <<- as.data.frame(matrix(c(1, input$V1,input$V2,input$V3,  input$V4,input$V5,input$V6,  input$V7,input$V8,input$V9,  input$V10,input$V11,input$V12, input$V13,input$V14,input$V15,input$V16,input$V17),ncol=18))
+        rv$datatestin <<- as.data.frame(matrix(c(1, input$V1,input$V2,input$V3,  input$V4,input$V5,input$V6,  input$V7,input$V8,input$V9,  input$V10,input$V11,input$V12, input$V13,input$V14,input$V15,input$V16,input$V17,input$V18),ncol=19))
         rv$bipltest <<- bipldrawknn(datatrain = graphdata, datatest = rv$datatestin, alphin = input$innerpoly/100,  type = "CVA", kin =input$knnin,plotprop=c(T,T,F,T,T,T,T),
                                  expin = 4, rotate.degrees = 0,ax.coltri  = rep("white", dim(graphdata)[2]-1), ax.name.coltri = rep("white", dim(graphdata)[2]-1),
                                  tickcol = rep("white", dim(graphdata)[2]-1), ticktextcol = rep("white", dim(graphdata)[2]-1),
-                                 nint= c(rep(20,11),2000,500,rep(20, 4)),hullmultin = c(input$outermult,input$outerpoly/100),pchsize=0.75,
-                                 orthog.transx = c(-0.2,-0.2,  0,0.3,0.4,0.5, 0.22,0.25,   0,   0,-0.2,-0.23,   0, 0.20, 0.28,0.17,  0),
-                                 orthog.transy = c(   0,-0.2,0.3,  0,  0,  0,-0.22,0.25,-0.2,-0.3,   0,    0,0.35,-0.14,-0.28,0.17,0.3), 
-                                 axin = 1:17,classnames = c("Decrease","Stable","Increase"), nbpin = input$nbp)
+                                 nint= c(rep(20,12),2000,500,rep(20, 4)),hullmultin = c(input$outermult,input$outerpoly/100),pchsize=0.75,
+                                 orthog.transx = c(-0.2,-0.2,  0,0.25,0.4,0.5,0.3, 0.22,0.25,   0,   0,-0.2,-0.23,   0, 0.20, 0.28,0.17,  0),
+                                 orthog.transy = c(   0,-0.2,0.3, 0.3, 0,  0,  0,-0.22,0.25,-0.2,-0.3,   0,    0,0.35,-0.14,-0.28,0.17,0.3), 
+                                 axin = 1:18,classnames = c("Decrease","Stable","Increase"), nbpin = input$nbp)
         x <<- recordPlot()
-        outplay <<- playground(rv$bipltest,5, axin = 1:17, grid = input$gridsize,varnamesin = varnamesall,unifbar = (input$score == "Ratio"))
+        outplay <<- playground(rv$bipltest,5, axin = 1:18, grid = input$gridsize,varnamesin = varnamesall,unifbar = (input$score == "Ratio"))
         outplay <- outplay[[1]]
         Zstar <- scale(rv$datatestin[,-1], rv$bipltest$bipl$X.means, scale = FALSE) %*% rv$bipltest$bipl$Br %*% rv$bipltest$bipl$rotate.mat %*% rv$bipltest$bipl$reflect.mat
         Zstar <- as.data.frame(Zstar)
@@ -187,10 +189,10 @@ server <- function(input,output,session)
         
         graphics::box(which = "plot", col = "white")
 
-        predictions<<- matrix(rep(NA,4*17),nrow=17)
-        actualtest <<- matrix(rep(NA,4*17),nrow=17)
+        predictions<<- matrix(rep(NA,4*18),nrow=18)
+        actualtest <<- matrix(rep(NA,4*18),nrow=18)
         
-        for(i in 1:17)
+        for(i in 1:18)
         {
           #points(x = Zstar[1,1], y = Zstar[1,2],pch=15) 
           predictions[i, 1] <<- round(DrawOrthogline(x1 = rv$bipltest$Zaxes[[i]][1,1], 
@@ -286,8 +288,8 @@ server <- function(input,output,session)
         colnames(Zstar) <- c("X1","X2")
         points(x = Zstar[1,1], y = Zstar[1,2],pch=15) 
         
-        predictions<- matrix(rep(NA,4*17),nrow=17)
-        actualtest <- matrix(rep(NA,4*17),nrow=17)
+        predictions<- matrix(rep(NA,4*18),nrow=18)
+        actualtest <- matrix(rep(NA,4*18),nrow=18)
         
         for(i in sharemarkettypes)
         {
@@ -328,8 +330,8 @@ server <- function(input,output,session)
         colnames(Zstar) <- c("X1","X2")
         points(x = Zstar[1,1], y = Zstar[1,2],pch=15) 
         
-        predictions<- matrix(rep(NA,4*17),nrow=17)
-        actualtest <- matrix(rep(NA,4*17),nrow=17)
+        predictions<- matrix(rep(NA,4*18),nrow=18)
+        actualtest <- matrix(rep(NA,4*18),nrow=18)
         
         for(i in accounttype)
         {
@@ -370,8 +372,8 @@ server <- function(input,output,session)
         colnames(Zstar) <- c("X1","X2")
         points(x = Zstar[1,1], y = Zstar[1,2],pch=15) 
         
-        predictions<- matrix(rep(NA,4*17),nrow=17)
-        actualtest <- matrix(rep(NA,4*17),nrow=17)
+        predictions<- matrix(rep(NA,4*18),nrow=18)
+        actualtest <- matrix(rep(NA,4*18),nrow=18)
 
         for(i in economytype)
         {
@@ -412,8 +414,8 @@ server <- function(input,output,session)
         colnames(Zstar) <- c("X1","X2")
         points(x = Zstar[1,1], y = Zstar[1,2],pch=15) 
         
-        predictions<- matrix(rep(NA,4*17),nrow=17)
-        actualtest <- matrix(rep(NA,4*17),nrow=17)
+        predictions<- matrix(rep(NA,4*18),nrow=18)
+        actualtest <- matrix(rep(NA,4*18),nrow=18)
 
         for(i in interesttypes)
         {
